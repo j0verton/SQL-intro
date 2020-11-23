@@ -17,7 +17,7 @@ INNER JOIN Artist a on s.ArtistId = a.Id;
 
 
 -- #4
---this would returns too many results, an instance of the artist for each album
+--this returns too many results, an instance of the artist for each album
 SELECT a.Id, a.ArtistName, g.Label
 FROM Album al
 INNER JOIN Genre g on g.Id = al.GenreId
@@ -33,11 +33,10 @@ INNER JOIN Genre g on g.Id = al.GenreId
 WHERE g.Label = 'Jazz' OR g.Label ='Rock';
 
 --#6 
---not working
-SELECT a.Id, a.Title, s.Title
+SELECT a.Title
 FROM Album a
 LEFT JOIN Song s ON a.Id = s.AlbumId
-WHERE s.Title = NULL;
+WHERE s.Title IS NULL;
 
 --#7
 --INSERT INTO Artist (ArtistName, YearEstablished) VALUES ('The Drive-by Truckers', 1984)
@@ -84,14 +83,6 @@ INNER JOIN Album al on a.Id = al.ArtistId
 GROUP BY a.ArtistName 
 HAVING COUNT(DISTINCT al.Label)> 1
 
-
-SELECT a.ArtistName 
-FROM Artist a
-INNER JOIN Album al on a.Id = al.ArtistId
-GROUP BY a.ArtistName
-HAVING COUNT(al.Label) > 1;
-
-SELECT COUNT (al.Label)
 
 --#15
 SELECT Title, AlbumLength
