@@ -50,11 +50,25 @@ FROM Author a
 INNER JOIN Grade g ON g.id = a.GradeId
 WHERE g.Name = '3rd Grade'
 
+--#9 from tyler
+SELECT COUNT (a.Name), g.Name
+FROM Author a
+INNER JOIN Grade g ON g.id = a.GradeId
+WHERE g.Name = '3rd Grade'
+GROUP BY G.Name
+
 --#10
-SELECT COUNT (a.Name) as ThirdGradeAuthors
+SELECT COUNT (a.Name) as FirstSecondThirdGradeAuthors
 FROM Author a
 INNER JOIN Grade g ON g.id = a.GradeId
 WHERE g.Name = '3rd Grade' OR g.Name = '2nd Grade' OR g.Name = '1st Grade'
+
+--#10 from tyler
+SELECT COUNT (a.Name) as FirstSecondThirdGradeAuthors, G.Name
+FROM Author a
+INNER JOIN Grade g ON g.id = a.GradeId
+WHERE g.Name = '3rd Grade' OR g.Name = '2nd Grade' OR g.Name = '1st Grade'
+GROUP BY G.Name
 
 --#11
 SELECT COUNT (p.Id) as FourthGradePoems
@@ -85,10 +99,10 @@ WHERE WordCount = (
 	SELECT MAX(WordCount) as ShortestWord
 	FROM POEM);
 
---#15
---cant run if also query author name!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+--#15xx
 --which author has the most poems
 
+--broke 
 SELECT au.*, MAX(a.Num)
 FROM (SELECT AuthorId, COUNT(Id) AS Num
 	FROM Poem
@@ -96,6 +110,19 @@ FROM (SELECT AuthorId, COUNT(Id) AS Num
 ) a
 INNER JOIN Author au ON a.AuthorId = au.Id
 
+-- cant access author name
+SELECT  MAX(Author.Num)
+FROM (SELECT COUNT(Id) AS Num
+	FROM Poem
+	group by Authorid
+) Author;
+
+--gives the wrong result (combined same names)
+SELECT TOP 1 COUNT (p.Id) AS PoemCount, au.Name
+FROM Poem p
+JOIN Author au ON p.AuthorId = au.Id
+GROUP BY au.Name
+ORDER BY PoemCount DESC
 
 --#16
 SELECT COUNT (p.Id) AS SadPoemCount
@@ -104,7 +131,7 @@ INNER JOIN PoemEmotion pe ON pe.PoemId = p.Id
 INNER JOIN Emotion e ON e.Id = pe.EmotionId
 WHERE e.Name = 'Sadness'
 
---#17
+--#17xx
 --how many poems have no emotion
 --broke!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 SELECT pe.PoemId, p.Title
@@ -122,9 +149,8 @@ SELECT *
 FROM PoemEmotion
 ORDER BY PoemId
 
---#18
+--#18xx
 --find emotion with fewest poems
---broke!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 --SELECT MIN (poemCount)
 --FROM (SELECT p.Id, COUNT(p.Id) poemCount
@@ -133,7 +159,13 @@ ORDER BY PoemId
 --	INNER JOIN Emotion e ON e.Id = pe.EmotionId
 --	GROUP BY e.Name);
 
+--got the numbers needs a max and the name od the emotion
+SELECT COUNT(p.Id)
+FROM Poem p
+INNER JOIN PoemEmotion pe ON pe.PoemId = p.Id
+GROUP BY pe.EmotionId
 
---#19
 
---#20
+--#19xx
+
+--#20xx
