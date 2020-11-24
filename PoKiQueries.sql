@@ -89,21 +89,13 @@ WHERE WordCount = (
 --cant run if also query author name!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 --which author has the most poems
 
-SELECT Author.Name, MAX(Author.Num)
-FROM (SELECT COUNT(Id) AS Num
+SELECT au.*, MAX(a.Num)
+FROM (SELECT AuthorId, COUNT(Id) AS Num
 	FROM Poem
-	group by Authorid
-) Author;
+	group by AuthorId
+) a
+INNER JOIN Author au ON a.AuthorId = au.Id
 
-
---SELECT p.Id, a.Name
---FROM Poem p
---INNER JOIN Author a ON a.Id = p.AuthorId
---WHERE p.Id = (
---	SELECT COUNT(p.Id) as NumberOfPoems
---	FROM POEM)
---GROUP BY p.AuthorId
---ORDER BY p.Id
 
 --#16
 SELECT COUNT (p.Id) AS SadPoemCount
@@ -123,6 +115,8 @@ WHERE pe.PoemId = (
 	SELECT COUNT (pe.PoemId) AS EmotionCount)
 GROUP BY p.Title 
 
+SELECT Poem.num
+FROM (SELECT COUNT )
 
 SELECT * 
 FROM PoemEmotion
