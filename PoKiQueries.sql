@@ -38,6 +38,20 @@ SELECT SUM(WordCount) AS TotalWords
 FROM Poem
 
 --#8
-SELECT MIN(WordCount) AS ShortestPoem, Title
+SELECT WordCount, Title
 FROM Poem
---WHERE MIN(WordCount)
+WHERE WordCount = (
+	SELECT MIN(WordCount) as ShortestWord
+	FROM POEM);
+
+--#9
+SELECT COUNT (a.Name) as ThirdGradeAuthors
+FROM Author a
+INNER JOIN Grade g ON g.id = a.GradeId
+WHERE g.Name = '3rd Grade'
+
+--#10
+SELECT COUNT (a.Name) as ThirdGradeAuthors
+FROM Author a
+INNER JOIN Grade g ON g.id = a.GradeId
+WHERE g.Name = '3rd Grade' OR g.Name = '2nd Grade' OR g.Name = '1st Grade'
