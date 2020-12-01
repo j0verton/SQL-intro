@@ -193,6 +193,46 @@ JOIN Emotion e ON pe.EmotionId = e.Id
 GROUP BY e.Name
 ORDER BY COUNT(e.Id)
 
---#19xx
+--#19
+SELECT g.Name, COUNT(p.Id)
+FROM Grade g
+JOIN Author a ON g.Id = a.GradeId
+JOIN Poem p ON p.AuthorId = a.Id
+JOIN PoemEmotion pe ON pe.PoemId = p.Id
+JOIN Emotion e ON e.Id = pe.EmotionId
+WHERE e.Name = 'Joy'
+GROUP BY g.Name
+ORDER BY COUNT(p.Id) DESC
 
+--FROM ADAM
+SELECT TOP 1 g.Name, COUNT(p.Id)
+FROM Poem p
+JOIN PoemEmotion pe ON pe.PoemId = p.Id
+JOIN Emotion e ON pe.EmotionId = e.Id
+JOIN Author a ON p.AuthorId = a.Id
+JOIN Grade g ON a.GradeId = g.Id
+WHERE e.Name = 'Joy'
+GROUP BY g.Name
+ORDER BY COUNT(p.Id) DESC
 --#20xx
+--my solution gives a different answer than adams, need to find out why
+SELECT COUNT(p.Id), g.Name
+FROM Gender g
+JOIN Author a ON g.Id = a.GradeId
+JOIN Poem p ON p.AuthorId = a.Id
+JOIN PoemEmotion pe ON pe.PoemId = p.Id
+JOIN Emotion e ON e.Id = pe.EmotionId
+WHERE e.Name = 'Fear'
+GROUP BY g.Name
+ORDER BY COUNT(p.Id)
+
+--from adam
+SELECT g.Name, COUNT(p.Id)
+FROM Poem p
+JOIN PoemEmotion pe ON pe.PoemId = p.Id
+JOIN Emotion e ON pe.EmotionId = e.Id
+JOIN Author a ON p.AuthorId = a.Id
+JOIN Gender g ON a.GenderId = g.Id
+WHERE e.Name = 'Fear'
+GROUP BY g.Name
+ORDER BY COUNT(p.Id) ASC
