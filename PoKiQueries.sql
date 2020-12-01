@@ -176,23 +176,22 @@ FROM Poem p
 LEFT JOIN PoemEmotion pe ON pe.PoemId = p.Id
 WHERE pe.Id IS NULL
 
---#18xx
+--#18
 --find emotion with fewest poems
-
---SELECT MIN (poemCount)
---FROM (SELECT p.Id, COUNT(p.Id) poemCount
---	FROM Poem
---	INNER JOIN PoemEmotion pe ON pe.PoemId = p.Id
---	INNER JOIN Emotion e ON e.Id = pe.EmotionId
---	GROUP BY e.Name);
-
---got the numbers needs a max and the name od the emotion
-SELECT COUNT(p.Id), pe.EmotionId 
+--working!
+SELECT COUNT(e.Id), e.Name
 FROM Poem p
 INNER JOIN PoemEmotion pe ON pe.PoemId = p.Id
-GROUP BY pe.EmotionId
-ORDER BY COUNT(p.Id)
-
+JOIN Emotion e ON pe.EmotionId = e.Id
+GROUP BY e.Name
+ORDER BY COUNT(e.Id)
+--FROM ADAM
+SELECT TOP 1 e.Name
+FROM Poem p
+JOIN PoemEmotion pe ON pe.PoemId = p.Id
+JOIN Emotion e ON pe.EmotionId = e.Id
+GROUP BY e.Name
+ORDER BY COUNT(e.Id)
 
 --#19xx
 
