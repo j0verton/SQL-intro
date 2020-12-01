@@ -100,3 +100,7 @@ WHERE SongLength = (
 	SELECT MAX(SongLength)
 	FROM Song);
 
+
+	--SELECT TOP 1 SongLength, Title
+	--FROM Song
+	--ORDER BY SongLength DESC

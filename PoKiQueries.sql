@@ -37,12 +37,17 @@ ORDER BY a.Name
 SELECT SUM(WordCount) AS TotalWords
 FROM Poem
 
---#8
+--#8 -- Which poem has the fewest characters?
 SELECT WordCount, Title
 FROM Poem
 WHERE WordCount = (
 	SELECT MIN(WordCount) as ShortestWord
 	FROM POEM);
+
+	--#8 from Adam solution seems wrong ___________________________________________________
+	SELECT TOP 1 Title, CharCount 
+	FROM Poem
+ORDER BY CharCount
 
 --#9
 SELECT COUNT (a.Name) as ThirdGradeAuthors
@@ -57,7 +62,8 @@ INNER JOIN Grade g ON g.id = a.GradeId
 WHERE g.Name = '3rd Grade'
 GROUP BY G.Name
 
---#10
+--#10 How many authors are in the first, second or third grades?
+--mine groups them into a single number which was not as intended
 SELECT COUNT (a.Name) as FirstSecondThirdGradeAuthors
 FROM Author a
 INNER JOIN Grade g ON g.id = a.GradeId
@@ -70,14 +76,14 @@ INNER JOIN Grade g ON g.id = a.GradeId
 WHERE g.Name = '3rd Grade' OR g.Name = '2nd Grade' OR g.Name = '1st Grade'
 GROUP BY G.Name
 
---#11
+--#11 What is the total number of poems written by fourth graders?
 SELECT COUNT (p.Id) as FourthGradePoems
 FROM Author a
 INNER JOIN Poem p ON a.Id = p.AuthorId
 INNER JOIN Grade g ON g.id = a.GradeId
 WHERE g.Name = '4th Grade'
 
---#12
+--#12 How many poems are there per grade?
 SELECT COUNT (p.Id) AS GradePoems, g.Name
 FROM Author a
 INNER JOIN Poem p ON a.Id = p.AuthorId
@@ -85,19 +91,24 @@ INNER JOIN Grade g ON g.id = a.GradeId
 GROUP BY g.Name
 ORDER BY g.Name
 
---#13
+--#13 How many authors are in each grade? (Order your results by grade starting with 1st Grade)
 SELECT COUNT (a.Id) GradeAuthors,  g.Name
 FROM Author a
 INNER JOIN Grade g ON g.id = a.GradeId
 GROUP BY g.Name
 ORDER BY g.Name
 
---#14
+--#14 What is the title of the poem that has the most words_______________________________________
 SELECT WordCount, Title
 FROM Poem
 WHERE WordCount = (
-	SELECT MAX(WordCount) as ShortestWord
+	SELECT MAX(WordCount)
 	FROM POEM);
+
+	--#14 alt from adam, appears wrong
+SELECT TOP 1 Title, WordCount
+FROM Poem
+ORDER BY WordCount DESC
 
 --#15xx
 --which author has the most poems
@@ -124,6 +135,15 @@ JOIN Author au ON p.AuthorId = au.Id
 GROUP BY au.Name
 ORDER BY PoemCount DESC
 
+-- from adam
+SELECT a.Name, Count(p.Id) as PoemCount
+FROM Author a
+JOIN Poem p ON p.AuthorId = a.Id
+GROUP BY a.Id, a.Name
+ORDER BY COUNT(p.Id) DESC
+
+
+
 --#16
 SELECT COUNT (p.Id) AS SadPoemCount
 FROM Poem p
@@ -149,6 +169,13 @@ SELECT *
 FROM PoemEmotion
 ORDER BY PoemId
 
+
+--FROM ADAM
+SELECT COUNT(*)  AS EmotionlessPoems
+FROM Poem p
+LEFT JOIN PoemEmotion pe ON pe.PoemId = p.Id
+WHERE pe.Id IS NULL
+
 --#18xx
 --find emotion with fewest poems
 
@@ -160,10 +187,11 @@ ORDER BY PoemId
 --	GROUP BY e.Name);
 
 --got the numbers needs a max and the name od the emotion
-SELECT COUNT(p.Id)
+SELECT COUNT(p.Id), pe.EmotionId 
 FROM Poem p
 INNER JOIN PoemEmotion pe ON pe.PoemId = p.Id
 GROUP BY pe.EmotionId
+ORDER BY COUNT(p.Id)
 
 
 --#19xx
